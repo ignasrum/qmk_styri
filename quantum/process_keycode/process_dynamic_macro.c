@@ -17,6 +17,15 @@
 
 /* Author: Wojciech Siewierski < wojciech dot siewierski at onet dot pl > */
 #include "process_dynamic_macro.h"
+#include <stddef.h>
+#include "action_layer.h"
+#include "keycodes.h"
+#include "debug.h"
+#include "wait.h"
+
+#ifdef BACKLIGHT_ENABLE
+#    include "backlight.h"
+#endif
 
 // default feedback method
 void dynamic_macro_led_blink(void) {
@@ -124,9 +133,8 @@ void dynamic_macro_record_key(keyrecord_t *macro_buffer, keyrecord_t **macro_poi
     if (*macro_pointer - direction != macro2_end) {
         **macro_pointer = *record;
         *macro_pointer += direction;
-    } else {
-        dynamic_macro_record_key_user(direction, record);
     }
+    dynamic_macro_record_key_user(direction, record);
 
     dprintf("dynamic macro: slot %d length: %d/%d\n", DYNAMIC_MACRO_CURRENT_SLOT(), DYNAMIC_MACRO_CURRENT_LENGTH(macro_buffer, *macro_pointer), DYNAMIC_MACRO_CURRENT_CAPACITY(macro_buffer, macro2_end));
 }
@@ -187,7 +195,7 @@ static keyrecord_t *macro_end = macro_buffer;
 static keyrecord_t *const r_macro_buffer = macro_buffer + DYNAMIC_MACRO_SIZE - 1;
 
 /* Like macro_end but for the second macro. */
-static keyrecord_t *r_macro_end = r_macro_buffer;
+static keyrecord_t *r_macro_end = macro_buffer + DYNAMIC_MACRO_SIZE - 1;
 
 /* A persistent pointer to the current macro position (iterator)
  * used during the recording. */
