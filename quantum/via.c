@@ -22,17 +22,39 @@
 #    error "DYNAMIC_KEYMAP_ENABLE is not enabled"
 #endif
 
-#include "quantum.h"
-
 #include "via.h"
 
 #include "raw_hid.h"
 #include "dynamic_keymap.h"
 #include "eeprom.h"
+#include "eeconfig.h"
+#include "matrix.h"
+#include "timer.h"
+#include "wait.h"
 #include "version.h" // for QMK_BUILDDATE used in EEPROM magic
+
+#if defined(AUDIO_ENABLE)
+#    include "audio.h"
+#endif
+
+#if defined(BACKLIGHT_ENABLE)
+#    include "backlight.h"
+#endif
+
+#if defined(RGBLIGHT_ENABLE)
+#    include "rgblight.h"
+#endif
 
 #if (defined(RGB_MATRIX_ENABLE) || defined(LED_MATRIX_ENABLE))
 #    include <lib/lib8tion/lib8tion.h>
+#endif
+
+#if defined(RGB_MATRIX_ENABLE)
+#    include "rgb_matrix.h"
+#endif
+
+#if defined(LED_MATRIX_ENABLE)
+#    include "led_matrix.h"
 #endif
 
 // Can be called in an overriding via_init_kb() to test if keyboard level code usage of
@@ -612,11 +634,6 @@ void via_qmk_rgblight_save(void) {
 
 #if defined(RGB_MATRIX_ENABLE)
 
-#    if !defined(RGB_MATRIX_MAXIMUM_BRIGHTNESS) || RGB_MATRIX_MAXIMUM_BRIGHTNESS > UINT8_MAX
-#        undef RGB_MATRIX_MAXIMUM_BRIGHTNESS
-#        define RGB_MATRIX_MAXIMUM_BRIGHTNESS UINT8_MAX
-#    endif
-
 void via_qmk_rgb_matrix_command(uint8_t *data, uint8_t length) {
     // data = [ command_id, channel_id, value_id, value_data ]
     uint8_t *command_id        = &(data[0]);
@@ -704,11 +721,6 @@ void via_qmk_rgb_matrix_save(void) {
 #endif // RGB_MATRIX_ENABLE
 
 #if defined(LED_MATRIX_ENABLE)
-
-#    if !defined(LED_MATRIX_MAXIMUM_BRIGHTNESS) || LED_MATRIX_MAXIMUM_BRIGHTNESS > UINT8_MAX
-#        undef LED_MATRIX_MAXIMUM_BRIGHTNESS
-#        define LED_MATRIX_MAXIMUM_BRIGHTNESS UINT8_MAX
-#    endif
 
 void via_qmk_led_matrix_command(uint8_t *data, uint8_t length) {
     // data = [ command_id, channel_id, value_id, value_data ]
