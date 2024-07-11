@@ -45,4 +45,4 @@
     { R57,   R56,   R55,   R54,   R53,   R52,   R51 },   \
     { R61,   KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO }, \
     { R73,   R72,   R71,   KC_NO, KC_NO, KC_NO, KC_NO }  \
-    }                                                    
+    }

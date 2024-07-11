@@ -40,7 +40,7 @@
         "oled": false
     },
     "rgb_matrix": {
-        "driver": "WS2812",
+        "driver": "ws2812",
         "split_count": [38, 38],
         "layout": [
             { "flags": 4, "x": 0,  "y": 0 },
