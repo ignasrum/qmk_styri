@@ -22,7 +22,7 @@ enum layers {
     TH, // FOURTH, used for Mac
 };
 
-const uint16_t PROGMEM keymaps[][MATRIX_COLS][MATRIX_ROWS] = {
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap ST: Default layer (Windows/Linux base layer)
  *
  * ,--------------------------------------------------.           ,--------------------------------------------------.
