@@ -22,6 +22,40 @@ enum layers {
     TH, // FOURTH, used for Mac
 };
 
+void keyboard_pre_init_user(void) {
+    setPinOutput(GP28);  // initialize GP28 for LED_1
+    setPinOutput(GP27);  // initialize GP27 for LED_2
+
+    writePinLow(GP28);
+    writePinLow(GP27);
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+        // Second layer
+        case ND:
+            writePinHigh(GP27);
+            writePinLow(GP28);
+            break;
+        // Third layer
+        case RD:
+            writePinLow(GP27);
+            writePinHigh(GP28);
+            break;
+        // Fourth layer
+        case TH:
+            writePinHigh(GP27);
+            writePinHigh(GP28);
+            break;
+        // Default / First layer
+        default:
+            writePinLow(GP27);
+            writePinLow(GP28);
+            break;
+    }
+    return state;
+}
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap ST: Default layer (Windows/Linux base layer)
  *
@@ -148,38 +182,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     KC_NO,  KC_NO,  KC_NO,      KC_NO,  KC_NO, KC_NO
     ),
 };
-
-void keyboard_pre_init_user(void) {
-    setPinOutput(GP28);  // initialize GP28 for LED_1
-    setPinOutput(GP27);  // initialize GP27 for LED_2
-
-    writePinLow(GP28);
-    writePinLow(GP27);
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-        // Second layer
-        case ND:
-            writePinHigh(GP27);
-            writePinLow(GP28);
-            break;
-        // Third layer
-        case RD:
-            writePinLow(GP27);
-            writePinHigh(GP28);
-            break;
-        // Fourth layer
-        case TH:
-            writePinHigh(GP27);
-            writePinHigh(GP28);
-            break;
-        // Default / First layer
-        default:
-            writePinLow(GP27);
-            writePinLow(GP28);
-            break;
-    }
-    return state;
-}
-
